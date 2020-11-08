@@ -1,11 +1,12 @@
 import { Router, Request, Response } from 'express';
-import { pool } from '../config';
+import pool from '../config';
 
 const routes = Router();
 
 routes.get('/procedure1', async (request: Request, response: Response) => {
+  await pool.connect();
   const sql2 =
-    "SELECT FirstName +' '+ LastName as [Nome Completo],Country as Pais   FROM Employees";
+    "SELECT FirstName +' '+ LastName as [Nome Completo], Country as Pais   FROM Employees";
 
   const { recordset } = await pool.request().query(sql2);
 

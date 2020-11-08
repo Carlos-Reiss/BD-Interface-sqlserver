@@ -3,16 +3,14 @@ import { pool } from '../config';
 
 const routes = Router();
 
-const sql2 =
-  "SELECT FirstName +' '+ LastName as [Nome Completo],Country   FROM Employees";
+routes.get('/procedure1', async (request: Request, response: Response) => {
+  const sql2 =
+    "SELECT FirstName +' '+ LastName as [Nome Completo],Country as Pais   FROM Employees";
 
-routes.get('/', async (request: Request, response: Response) => {
-  await pool.connect();
-
-  const resultado2 = await pool.request().query(sql2);
+  const { recordset } = await pool.request().query(sql2);
 
   pool.close();
-  return response.json(resultado2);
+  return response.json(recordset);
 });
 
 export default routes;

@@ -3,12 +3,26 @@ import pool from '../config';
 
 const routes = Router();
 
-routes.get('/procedure1', async (request: Request, response: Response) => {
+routes.get('/authors', async (request: Request, response: Response) => {
   await pool.connect();
-  const sql2 =
-    "SELECT EmployeeID as id, FirstName +' '+ LastName as nome, Country as pais   FROM Employees";
 
-  const { recordset } = await pool.request().query(sql2);
+  const query = `SELECT au_fname +' '+ au_lname as [nome] FROM authors`;
+
+  const { recordset: nomes } = await pool.request().query(query);
+
+  pool.close();
+  return response.json(nomes);
+});
+
+routes.get('/bestsellers', async (request: Request, response: Response) => {
+  await pool.connect();
+
+  // --MOSTRAR OS LIVROS DO AUTOR CONSIDERADOS BESTSELLERS / LIVROS QUE FORMA VENDIDOS EM 3 OU MAIS PEDIDOS
+  const { name, lastname } = request.query;
+
+  const sql = `EXEC BESTSELLERS ${name},'${lastname}';`;
+
+  const { recordset } = await pool.request().query(sql);
 
   pool.close();
   return response.json(recordset);

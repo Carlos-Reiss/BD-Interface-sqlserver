@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface IAtrib {
+  mostrar: boolean;
+}
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -10,9 +14,10 @@ export const Container = styled.div`
 `;
 
 export const Form = styled.form`
-  margin-top: 60px;
+  margin-top: ${(props: IAtrib) => (props.mostrar ? '60px' : '80px')};
 
-  display: flex;
+  display: ${(props: IAtrib) => (props.mostrar ? 'flex' : 'none')};
+
   flex-direction: column;
 
   justify-content: flex-start;
@@ -20,6 +25,9 @@ export const Form = styled.form`
 
   /* border: 1px solid black; */
   width: 60%;
+  > label {
+    margin-bottom: 20px;
+  }
   div {
     width: 60%;
     display: flex;
@@ -40,7 +48,17 @@ export const Form = styled.form`
   }
 `;
 
-export const PrimeiraProcedure = styled.div``;
+export const ButtonAdd = styled.div`
+  margin: 30px 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h4 {
+    margin-right: 20px;
+  }
+`;
 
 export const ListItems = styled.ul`
   li {

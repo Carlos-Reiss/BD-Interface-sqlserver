@@ -1,37 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Input, Button } from '@material-ui/core';
-import api from '../../services/api';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import Header from '../../components/Header';
+import Procedure from '../../components/Procedure';
 
-import { Container, Form, PrimeiraProcedure, ListItems } from './styles';
-
-type Idados = {
-  id: number;
-  nome: string;
-  pais: string;
-};
+import { Container, Form, ButtonAdd } from './styles';
 
 const Main: React.FC = () => {
-  const [dados, setDados] = useState<Idados[]>([{} as Idados]);
+  const [mostrar, setMostrar] = useState(false);
 
-  useEffect(() => {
-    const loadItems = async () => {
-      const response = await api.get('/procedure1');
-      setDados(response.data);
-    };
-
-    loadItems();
-  }, []);
+  const handleMostrar = useCallback(() => {
+    setMostrar(!mostrar);
+  }, [mostrar]);
 
   return (
     <>
       <Header />
       <Container>
         <h3>Interface Banco de dados II</h3>
-        <Form>
+
+        <ButtonAdd>
+          <h4>Inserir dados dentro da base de dados</h4>
+          <Fab
+            size="small"
+            color="primary"
+            aria-label="add"
+            onClick={handleMostrar}
+          >
+            <AddIcon />
+          </Fab>
+        </ButtonAdd>
+
+        <Form mostrar={mostrar}>
+          <label>
+            Mostrar os livros Dos Autores Considerados bestsellers, <br /> sendo
+            eles que foram vendidos em 3 ou mais pedidos.
+          </label>
           <div>
             <label>Dados: </label>
-            <Input type="dados" />
+            <Input type="dados" placeholder="Informe o dado" />
           </div>
           <div>
             <label>Dados: </label>
@@ -45,18 +53,7 @@ const Main: React.FC = () => {
             Salvar
           </Button>
         </Form>
-
-        <PrimeiraProcedure>
-          <h4>A primeira procedure</h4>
-          <ListItems>
-            {dados &&
-              dados.map(item => (
-                <li key={item.id}>
-                  <p>{item.id}</p>
-                </li>
-              ))}
-          </ListItems>
-        </PrimeiraProcedure>
+        <Procedure />
       </Container>
     </>
   );

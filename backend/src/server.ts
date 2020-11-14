@@ -10,4 +10,6 @@ api.use(express.json());
 
 api.use(router);
 
-api.listen(3333, () => console.log('Server running'));
+const porta = process.env.PORT ? process.env.PORT : 3333;
+
+api.listen(porta, () => console.log(`Servidor Rodando na porta: ${porta}`));

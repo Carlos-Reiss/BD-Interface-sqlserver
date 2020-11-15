@@ -28,7 +28,7 @@ export const Form = styled.form`
   > label {
     margin-bottom: 20px;
   }
-  div {
+  > div {
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -63,5 +63,34 @@ export const ButtonAdd = styled.div`
 export const ListItems = styled.ul`
   li {
     color: #000;
+  }
+`;
+
+export const MySelect = styled.div`
+  div {
+    width: 280px;
+    margin-left: 10px;
+  }
+`;
+
+export const TableCustomize = styled.div`
+  div {
+    width: 800px;
+    height: 480px;
+    &::-webkit-scrollbar {
+      width: 16px; /* width of the entire scrollbar */
+    }
+    &::-webkit-scrollbar-track {
+      background: #9999; /* color of the tracking area */
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #444; /* color of the scroll thumb */
+    }
+  }
+`;
+
+export const GroupSelect = styled.div`
+  div + div {
+    margin-top: 10px;
   }
 `;

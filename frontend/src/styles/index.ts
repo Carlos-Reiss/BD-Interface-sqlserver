@@ -22,4 +22,14 @@ export default createGlobalStyle`
   input, button{
     cursor: pointer;
   }
+
+  body::-webkit-scrollbar {
+    width: 16px;               /* width of the entire scrollbar */
+  }
+  body::-webkit-scrollbar-track {
+    background: #9999;        /* color of the tracking area */
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: #444;    /* color of the scroll thumb */
+  }
 `;

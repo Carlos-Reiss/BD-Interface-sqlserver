@@ -4,6 +4,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
 import { Container, MySelect } from './styles';
 import api from '../../services/api';
 
@@ -11,9 +18,16 @@ interface Nomes {
   nome: string;
 }
 
+interface Bestsellers {
+  nome_pub: string;
+  quantidade: number;
+  titulo: string;
+}
+
 const Procedure: React.FC = () => {
   const [authors, setAuthors] = useState<Nomes[]>([]);
   const [nome, setNome] = useState<string>('');
+  const [bests, setBests] = useState<Bestsellers[]>([]);
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -30,7 +44,7 @@ const Procedure: React.FC = () => {
         params: { name: first[0], lastname: first[1] },
       });
 
-      console.log(response.data);
+      setBests(response.data);
     }
     bestsellers();
   }, [nome]);
@@ -49,7 +63,7 @@ const Procedure: React.FC = () => {
       <form>
         <label>
           Mostrar os livros Dos Autores Considerados bestsellers, <br /> sendo
-          eles que foram vendidos em 3 ou mais pedidos.
+          eles que foram vendidos na publicadora em 1 ou mais pedidos.
         </label>
         <MySelect>
           <InputLabel id="demo-simple-select-outlined-label">
@@ -61,9 +75,6 @@ const Procedure: React.FC = () => {
             value={nome}
             onChange={handleChange}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
             {authors.map(author => (
               <MenuItem key={author.nome} value={author.nome}>
                 {author.nome}
@@ -72,6 +83,28 @@ const Procedure: React.FC = () => {
           </Select>
         </MySelect>
       </form>
+      {bests.length > 0 && (
+        <TableContainer style={{ width: 650 }}>
+          <Table style={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="right">Nome da publicadora</TableCell>
+                <TableCell align="right">Titulo</TableCell>
+                <TableCell align="right">Quantidade</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {bests.map(best => (
+                <TableRow key={best.titulo}>
+                  <TableCell align="right">{best.nome_pub}</TableCell>
+                  <TableCell align="right">{best.titulo}</TableCell>
+                  <TableCell align="right">{best.quantidade}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Container>
   );
 };

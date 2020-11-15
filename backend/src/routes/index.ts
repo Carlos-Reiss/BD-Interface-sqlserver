@@ -3,6 +3,32 @@ import pool from '../config';
 
 const routes = Router();
 
+routes.get('/employers', async (request: Request, response: Response) => {
+  await pool.connect();
+
+  const query = `SELECT emp_id as id, fname as name, lname as sobrenome, j.job_desc as job, p.pub_name as publicadora
+  FROM employee as e JOIN jobs j
+  ON j.job_id = e.job_id
+  JOIN publishers p
+  ON p.pub_id = e.pub_id`;
+
+  const { recordset: employers } = await pool.request().query(query);
+
+  pool.close();
+  return response.json(employers);
+});
+
+routes.get('/jobs', async (request: Request, response: Response) => {
+  await pool.connect();
+
+  const query = `SELECT job_id as id,job_desc as job FROM jobs`;
+
+  const { recordset: jobs } = await pool.request().query(query);
+
+  pool.close();
+  return response.json(jobs);
+});
+
 routes.get('/authors', async (request: Request, response: Response) => {
   await pool.connect();
 
@@ -26,6 +52,17 @@ routes.get('/bestsellers', async (request: Request, response: Response) => {
 
   pool.close();
   return response.json(recordset);
+});
+
+routes.get('/publishers', async (request: Request, response: Response) => {
+  await pool.connect();
+
+  const sql = `SELECT pub_id as id , pub_name as nome from publishers`;
+
+  const { recordset: publishers } = await pool.request().query(sql);
+
+  pool.close();
+  return response.json(publishers);
 });
 
 export default routes;
